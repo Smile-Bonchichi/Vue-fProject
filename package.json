@@ -2,6 +2,8 @@
   "name": "qq",
   "version": "0.1.0",
   "private": true,
+  "node": "18.4.0",
+  "npm": "8.12.1",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
