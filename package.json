@@ -3,12 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "heroku-postinstall": "npm install && npm run build",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
-  "heroku-postinstall": "npm install && npm run build",
   "dependencies": {
     "@vue/cli-service": "~5.0.0",
     "@vuelidate/core": "^2.0.0-alpha.42",
