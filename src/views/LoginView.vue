@@ -88,7 +88,7 @@ export default {
 
           console.log(global)
 
-          this.$router.push('/')
+          this.$router.push('/home')
         }
         if (response.status === 400) {
           messagePlugin.error("Не правильные данные")

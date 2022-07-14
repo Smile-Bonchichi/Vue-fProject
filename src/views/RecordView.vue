@@ -105,7 +105,7 @@ export default {
           messagePlugin.message("Запись добавлена")
 
           global.amount = response.data.amount
-          this.$router.push('/')
+          this.$router.push('/home')
         }
         if (response.status === 400) {
           messagePlugin.error("Не правильные данные")
