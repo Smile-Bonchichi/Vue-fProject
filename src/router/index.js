@@ -20,28 +20,10 @@ const routes = [
         component: () => import('../views/HomeView.vue')
     },
     {
-        path: '/categories',
-        name: 'categories',
-        meta: {layout: 'main'},
-        component: () => import('../views/CategoriesView.vue')
-    },
-    {
-        path: '/detail/:id',
-        name: 'detail',
-        meta: {layout: 'main'},
-        component: () => import('../views/DetailView.vue')
-    },
-    {
         path: '/history',
         name: 'history',
         meta: {layout: 'main'},
         component: () => import('../views/HistoryView.vue')
-    },
-    {
-        path: '/planning',
-        name: 'planning',
-        meta: {layout: 'main'},
-        component: () => import('../views/PlanningView.vue')
     },
     {
         path: '/profile',

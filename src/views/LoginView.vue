@@ -4,20 +4,22 @@
       <span class="card-title">CRM бухгалтерия</span>
       <div class="input-field">
         <input
-            id="email"
+            id="login"
             type="text"
             class="validate"
+            v-model="this.login"
         >
-        <label for="email">Email</label>
+        <label for="login">Login</label>
         <small
             class="helper-text invalid"
-        >Email</small>
+        >Login</small>
       </div>
       <div class="input-field">
         <input
             id="password"
             type="password"
             class="validate"
+            v-model="this.password"
         >
         <label for="password">Password</label>
         <small class="helper-text invalid">Password</small>
@@ -42,11 +44,12 @@
 <script>
 import messagePlugin from "@/utils/message.plugin";
 import messages from "@/utils/messages";
+import axios from "axios";
 
 export default {
   name: 'LoginView',
   data: () => ({
-    email: '',
+    login: '',
     password: ''
   }),
   mounted() {
@@ -56,10 +59,53 @@ export default {
   },
   methods: {
     async submitHandler() {
-      const formData = {
-        email: this.email,
-        password: this.password
-      }
+      axios({
+        url: 'https://home-bookkeeping-kstu-back.herokuapp.com/api/auth/sign-in',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-nHeaders': '*',
+          'Access-Control-Allow-Methods': '*',
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+          withCredentials: true,
+          mode: 'no-cors'
+        },
+        data: {
+          login: this.login,
+          password: this.password,
+        }
+      }).then(response => {
+        if (response.status === 200) {
+          messagePlugin.message("Вы авторизовались")
+
+          global.userName = this.login
+          global.token = response.data.token
+          global.amount = response.data.amount
+          global.currency = response.data.currency
+
+          console.log(global)
+
+          this.$router.push('/')
+        }
+        if (response.status === 400) {
+          messagePlugin.error("Не правильные данные")
+        }
+        if (response.status === 500) {
+          messagePlugin.error("Ошибка сервера. Ожидайте пока исправим :)")
+        }
+      }).catch(error => {
+        console.log(error)
+
+        if (error.response.status === 400) {
+          messagePlugin.error("Не правильные данные")
+        }
+        if (error.response.status === 500) {
+          messagePlugin.error("Ошибка сервера. Ожидайте пока исправим :)")
+        }
+      });
     }
   }
 }

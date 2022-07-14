@@ -15,25 +15,22 @@
           <th>#</th>
           <th>Сумма</th>
           <th>Дата</th>
-          <th>Категория</th>
+          <th>Описание</th>
           <th>Тип</th>
-          <th>Открыть</th>
         </tr>
         </thead>
 
-        <tbody>
+        <tbody
+            v-for="history in histories"
+            :key="history.rowNumber"
+        >
         <tr>
-          <td>1</td>
-          <td>1212</td>
-          <td>12.12.32</td>
-          <td>name</td>
+          <td>{{ history.rowNumber }}</td>
+          <td>{{ history.amount }}</td>
+          <td>{{ getFormatDate(history.recordDate) }}</td>
+          <td>{{ history.description }}</td>
           <td>
-            <span class="white-text badge red">Расход</span>
-          </td>
-          <td>
-            <button class="btn-small btn">
-              <i class="material-icons">open_in_new</i>
-            </button>
+            <span class="white-text badge black">{{ history.type }}</span>
           </td>
         </tr>
         </tbody>
@@ -43,7 +40,47 @@
 </template>
 
 <script>
+import axios from "axios";
+import messagePlugin from "@/utils/message.plugin";
+
 export default {
-  name: 'HistoryView'
+  name: 'HistoryView',
+  data: () => ({
+    histories: [{rowNumber: 0, amount: 0, recordDate: '', description: '', type: ''}]
+  }),
+  methods: {
+    getFormatDate(value) {
+      return value
+    }
+  },
+  mounted() {
+    axios({
+      url: 'https://home-bookkeeping-kstu-back.herokuapp.com/api/history/get-all',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-nHeaders': '*',
+        'Access-Control-Allow-Methods': '*',
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+        "Authorization": global.token,
+        withCredentials: true,
+        mode: 'no-cors'
+      },
+    }).then(response => {
+      if (response.status === 200) {
+        this.histories = response.data
+      }
+      if (response.status === 500) {
+        messagePlugin.error("Ошибка сервера. Ожидайте пока исправим :)")
+      }
+    }).catch(error => {
+      if (error.response.status === 500) {
+        messagePlugin.error("Ошибка сервера. Ожидайте пока исправим :)")
+      }
+    });
+  }
 }
 </script>

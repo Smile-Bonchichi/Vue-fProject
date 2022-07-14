@@ -16,7 +16,7 @@
               data-target="dropdown"
               ref="dropdown"
           >
-            USER NAME
+            {{ getUserName() }}
             <i class="material-icons right">arrow_drop_down</i>
           </a>
 
@@ -51,6 +51,9 @@ export default {
   methods: {
     logout() {
       this.$router.push('/login?message=logout')
+    },
+    getUserName() {
+      return global.userName
     }
   },
   mounted() {

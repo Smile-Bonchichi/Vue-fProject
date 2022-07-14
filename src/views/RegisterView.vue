@@ -66,12 +66,12 @@ export default {
     email: '',
     password: '',
     login: '',
-    agree: false
+    token: ''
   }),
   methods: {
     async submitHandler() {
       axios({
-        url: 'http://localhost:8081/api/auth/sign-up',
+        url: 'https://home-bookkeeping-kstu-back.herokuapp.com/api/auth/sign-up',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,14 +90,22 @@ export default {
           login: this.login
         }
       }).then(response => {
-        console.log(response)
+        if (response.status === 200) {
+          messagePlugin.message("Аккаунт создан")
+          this.$router.push('/login')
+        }
+        if (response.status === 400) {
+          messagePlugin.error("Не правильные данные")
+        }
+        if (response.status === 500) {
+          messagePlugin.error("Такой пользователь уже есть")
+        }
       }).catch(error => {
-        console.log(error);
         if (error.response.status === 400) {
           messagePlugin.error("Не правильные данные")
         }
         if (error.response.status === 500) {
-          messagePlugin.error("Ошибка сервера. Ожидайте пока исправим :)")
+          messagePlugin.error("Такой пользователь уже есть")
         }
       });
     }
