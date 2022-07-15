@@ -92,7 +92,7 @@ export default {
       }).then(response => {
         if (response.status === 200) {
           messagePlugin.message("Аккаунт создан")
-          this.$router.push('/login')
+          this.$router.push('/')
         }
         if (response.status === 400) {
           messagePlugin.error("Не правильные данные")
