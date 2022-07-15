@@ -50,7 +50,7 @@ export default {
   }),
   methods: {
     logout() {
-      this.$router.push('/login?message=logout')
+      this.$router.push('/?message=logout')
     },
     getUserName() {
       return global.userName
